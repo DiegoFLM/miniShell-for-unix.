@@ -78,6 +78,7 @@ int main()
     	
     		execvp(cmd[0], cmd); /*Sons process deads and is replaced by the commands execution*/
     		printf("\nExecvp failed to execute.\n");
+    		exit(EXIT_FAILURE);
     	
     	} else {
     	    printf("\nDad is here\n");
