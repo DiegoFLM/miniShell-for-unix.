@@ -64,7 +64,7 @@ int main()
     	pid_t sonsPid;
     	sonsPid = fork();    
     	
-    	printf("cmd[0] = --%s--", cmd[0]);
+    	//printf("cmd[0] = --%s--", cmd[0]);
     	if (strcmp(cmd[0], "exit") == 0){
     		t = 0;
     	}
@@ -80,6 +80,7 @@ int main()
     		printf("\nExecvp failed to execute.\n");
     	
     	} else {
+    	    printf("\nDad is here\n");
     	    wait(&estado);
             if(WIFEXITED(estado)){
                 if(WEXITSTATUS(estado)){
@@ -87,7 +88,7 @@ int main()
                 }else{
                         printf(":)");
                 }
-	    	printf("\nDad is here\n");
+	    	
 	    }
     	}
     
