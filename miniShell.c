@@ -3,6 +3,8 @@
  
 #include<stdlib.h>
 #include<unistd.h>
+
+#include<sys/wait.h>
  
 int main()
 {
@@ -12,9 +14,10 @@ int main()
     char str[100];
     char commands[15][15]; //can store 15 commands of 15 characters
     int i,j,cnt;
+    int estado;
+    int t = 1;
  
- 
-    while(1){
+    while(t){
  
     	printf("Enter a string: ");
     	fgets(str, 100, stdin);
@@ -60,6 +63,11 @@ int main()
     
     	pid_t sonsPid;
     	sonsPid = fork();    
+    	
+    	printf("cmd[0] = --%s--", cmd[0]);
+    	if (strcmp(cmd[0], "exit") == 0){
+    		t = 0;
+    	}
         
     	if (sonsPid < 0){
     		//fork failed
@@ -72,7 +80,15 @@ int main()
     		printf("\nExecvp failed to execute.\n");
     	
     	} else {
-	    printf("\nDad is here\n");
+    	    wait(&estado);
+            if(WIFEXITED(estado)){
+                if(WEXITSTATUS(estado)){
+                        printf(":(");
+                }else{
+                        printf(":)");
+                }
+	    	printf("\nDad is here\n");
+	    }
     	}
     
     
