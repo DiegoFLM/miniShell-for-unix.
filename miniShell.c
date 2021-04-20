@@ -19,7 +19,7 @@ int main()
  
     while(t){
  
-    	printf("Enter a string: ");
+    	printf("At your command: ");
     	fgets(str, 100, stdin);
  
  
@@ -81,7 +81,7 @@ int main()
     		exit(EXIT_FAILURE);
     	
     	} else {
-    	    printf("\nDad is here\n");
+    	    //printf("\nDad is here\n");
     	    wait(&estado);
             if(WIFEXITED(estado)){
                 if(WEXITSTATUS(estado)){
