@@ -28,7 +28,7 @@ int main()
     	for(i=0;i<=(strlen(str));i++)
     	{
         	// if space or NULL found, assign NULL into commands[cnt]
-        	if(str[i]==' '||str[i]=='\0' || str[i] == '\r' || str[i] == '$' || str[i] == '\n')
+        	if(str[i]==' '||str[i]=='\0' || str[i] == '\r' /*|| str[i] == '$'*/ || str[i] == '\n')
         	{
             		commands[cnt][j]='\0';
             		cnt++;  //for next command
@@ -40,11 +40,7 @@ int main()
             		j++;
         	}
     	}
-    	//printf("\nOriginal String is: %s",str);
-    	//printf("\nStrings (commands) after split by space:\n");
-    
-        
-    	//printf("\nNumber of commands: %d\n", cnt);
+    	
         
     	int argc;    
     	char *cmd[5];    
@@ -52,19 +48,15 @@ int main()
     	argc = 5;
     
     	for(i=0;i < cnt;i++){
-       	//printf("%s\n",commands[i]);
     		cmd[i] = commands[i];
-    		//printf("%s\n",cmd[i]);
     	}
     	cmd[i - 1] = NULL;
-    	//printf("\nAfter for, i: %d\n", i);
     
     
     
     	pid_t sonsPid;
     	sonsPid = fork();    
     	
-    	//printf("cmd[0] = --%s--", cmd[0]);
     	if (strcmp(cmd[0], "exit") == 0){
     		t = 0;
     	}
