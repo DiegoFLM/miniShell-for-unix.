@@ -5,6 +5,9 @@
 #include<unistd.h>
 
 #include<sys/wait.h>
+
+#define READ 0
+#define WRITE 1
  
 int main()
 {
@@ -16,7 +19,22 @@ int main()
     int i,j,cnt;
     int estado;
     int t = 1;
- 
+    
+    //PIPE
+    int fd[2];
+    int pipeTotal;
+    int pipeBreakers[5] //LAST LINE WRITTEN
+    
+    if (pipe(fd) == -1){
+    	perror("Creating pipe");
+    	exit(EXIT_FAILURE);
+    }
+    
+    
+    
+    
+    
+ 	
     while(t){
  
     	printf("At your command: ");
@@ -24,17 +42,22 @@ int main()
  
  
  
-	j=0; cnt=0;
+	j=0; cnt=0; pipeTotal = 0;
     	for(i=0;i<=(strlen(str));i++)
     	{
         	// if space or NULL found, assign NULL into commands[cnt]
         	if(str[i]==' '||str[i]=='\0' || str[i] == '\r' /*|| str[i] == '$'*/ || str[i] == '\n')
         	{
-            		commands[cnt][j]='\0';
-            		cnt++;  //for next command
-            		j=0;    //for next command, init index to 0
-        	}
-        	else
+        		if(str[i - 1]==' ' && str[i] == ' ') {
+        		}else {
+        			commands[cnt][j]='\0';
+            			cnt++;  //for next command
+            			j=0;    //for next command, init index to 0
+            		}
+        	}else if(str[i] == '|'){
+        		pipeTotal++;
+        		
+        	}else
         	{
             		commands[cnt][j]=str[i];
             		j++;
@@ -56,6 +79,35 @@ int main()
     
     	pid_t sonsPid;
     	sonsPid = fork();    
+    	
+    	if (pipeTotal > 0){
+    		/*PIPE*/
+    		for (int pipeCounter = 0; pipeCounter < pipeTotal; pipeCounter++){
+    			if (sonsPid == -1){
+    				perror("fork() failed");
+    				exit(EXIT_FAILURE);
+    			}else if(sonsPid == 0){ //Child process
+    				//Close the pipe write descriptor.
+    				close(fd[WRITE]);
+    				//Redirect STDIN to read from the pipe.
+    				dup2(fd[READ], STDIN_FILENO);
+    				
+    			}
+    		}	
+    		continue;	
+    	} /*else {
+    		
+    		
+    	}*/
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     	
     	if (strcmp(cmd[0], "exit") == 0){
     		t = 0;
@@ -91,3 +143,10 @@ int main()
         
     return 0;
 }
+
+
+
+
+
+
+
