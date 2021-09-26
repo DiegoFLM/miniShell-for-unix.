@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
+
  
 #include<stdlib.h>
 #include<unistd.h>
+
+#include<assert.h>
+#include<fcntl.h>
+
 
 #include<sys/wait.h>
 
@@ -23,7 +29,15 @@ int main()
     //PIPE
     int fd[2];
     int pipeTotal;
-    int pipeBreakers[5] //LAST LINE WRITTEN
+    int pipeLocs[10];
+    
+    //REDIRECT
+    int redirectTotal;
+    int redirectLocs[5];
+    int file;
+    
+    
+    
     
     if (pipe(fd) == -1){
     	perror("Creating pipe");
@@ -41,8 +55,8 @@ int main()
     	fgets(str, 100, stdin);
  
  
- 
-	j=0; cnt=0; pipeTotal = 0;
+ 	int pipeLoc[10], redirectLoc[5];
+	j=0; cnt=0; pipeTotal = 0, redirectTotal = 0;
     	for(i=0;i<=(strlen(str));i++)
     	{
         	// if space or NULL found, assign NULL into commands[cnt]
@@ -55,10 +69,16 @@ int main()
             			j=0;    //for next command, init index to 0
             		}
         	}else if(str[i] == '|'){
+        		pipeLocs[pipeTotal] = cnt - 1;
         		pipeTotal++;
         		
-        	}else
-        	{
+        	}else if (str[i] == '>'){
+        		redirectLocs[redirectTotal] = cnt - 1;
+        		redirectTotal++;
+        		
+        		
+        	}
+        	else{
             		commands[cnt][j]=str[i];
             		j++;
         	}
@@ -80,6 +100,11 @@ int main()
     	pid_t sonsPid;
     	sonsPid = fork();    
     	
+    	if (strcmp(cmd[0], "exit") == 0){
+    		t = 0;
+    	}
+    	
+    	//PIPE
     	if (pipeTotal > 0){
     		/*PIPE*/
     		for (int pipeCounter = 0; pipeCounter < pipeTotal; pipeCounter++){
@@ -95,23 +120,53 @@ int main()
     			}
     		}	
     		continue;	
-    	} /*else {
-    		
-    		
-    	}*/
+    	} else if (redirectTotal > 0) {		//Redirection
+    		file = open("output.txt", O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
+    		assert(file != -1);
+    		dup2(file, STDOUT_FILENO);
+		
+		if (sonsPid < 0){
+    			//fork failed
+    			fprintf(stderr, "fork failed\n");
+    			exit(1);
+    		} else if (sonsPid == 0){
+    			//child, commands will be executed here:
     	
+    			execvp(cmd[0], cmd); /*Sons process deads and is replaced by the commands execution*/
+    			printf("\nExecvp failed to execute.\n");
+    			exit(EXIT_FAILURE);
     	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	if (strcmp(cmd[0], "exit") == 0){
-    		t = 0;
+    		} else {
+    		    //printf("\nDad is here\n");
+    		    wait(&estado);
+    	        if(WIFEXITED(estado)){
+    	            if(WEXITSTATUS(estado)){
+                        printf(":(");
+    	            }else{
+                        printf(":)");
+                    }
+	    	
+	    	}
     	}
+		
+		
+		    		
+    		close(file);
+    		return 0;
+    		
+    		continue;
+    	}
+    	
+    	continue;
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
         
     	if (sonsPid < 0){
     		//fork failed
