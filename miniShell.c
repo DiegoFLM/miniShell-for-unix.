@@ -54,16 +54,15 @@ int main()
     	printf("At your command: ");
     	fgets(str, 100, stdin);
  
- 
+ 	char commands[15][15];
  	int pipeLoc[10], redirectLoc[5];
 	j=0; cnt=0; pipeTotal = 0, redirectTotal = 0;
     	for(i=0;i<=(strlen(str));i++)
     	{
         	// if space or NULL found, assign NULL into commands[cnt]
-        	if(str[i]==' '||str[i]=='\0' || str[i] == '\r' /*|| str[i] == '$'*/ || str[i] == '\n')
-        	{
+        	if(str[i]==' '||str[i]=='\0' || str[i] == '\r' /*|| str[i] == '$'*/ || str[i] == '\n'){
         		if(str[i - 1]==' ' && str[i] == ' ') {
-        		}else if (str[i] != '|' && str[i] != '>'){
+        		}else {
         			commands[cnt][j]='\0';
             			cnt++;  //for next command
             			j=0;    //for next command, init index to 0
@@ -77,12 +76,12 @@ int main()
         		redirectTotal++;
         		
         		
-        	}
-        	else{
+        	}else{
             		commands[cnt][j]=str[i];
             		j++;
         	}
     	}
+    	
     	
         
     	int argc;    
@@ -121,7 +120,9 @@ int main()
     		}	
     		continue;	
     	} else if (redirectTotal > 0) {		//Redirection
-    		file = open("output.txt", O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
+    		
+		
+		file = open("output.txt", O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
     		assert(file != -1);
     		dup2(file, STDOUT_FILENO);
 		
@@ -132,32 +133,28 @@ int main()
     		} else if (sonsPid == 0){
     			//child, commands will be executed here:
     	
-    			execvp(cmd[0], cmd); /*Sons process deads and is replaced by the commands execution*/
-    			printf("\nExecvp failed to execute.\n");
-    			exit(EXIT_FAILURE);
-    	
+    			
     		} else {
     		    //printf("\nDad is here\n");
     		    wait(&estado);
+    		    //close(file);		
     	        if(WIFEXITED(estado)){
-    	            if(WEXITSTATUS(estado)){
-                        printf(":(");
-    	            }else{
-                        printf(":)");
-                    }
+    	        	//close(file);		//LLA
+    	            	if(WEXITSTATUS(estado)){
+                        	close(file);
+                        	printf(":(\n");
+    	            	}else{
+                        	close(file);
+                        	printf(":)\n");
+                    	}
 	    	
 	    	}
     	}
 		
-		
-		    		
-    		close(file);
-    		return 0;
-    		
     		continue;
     	}
     	
-    	continue;
+    	
     	
     	
     	
@@ -184,9 +181,9 @@ int main()
     	    wait(&estado);
             if(WIFEXITED(estado)){
                 if(WEXITSTATUS(estado)){
-                        printf(":(");
+                        printf(":(\n");
                 }else{
-                        printf(":)");
+                        printf(":)\n");
                 }
 	    	
 	    }
