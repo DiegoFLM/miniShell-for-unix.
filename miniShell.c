@@ -63,7 +63,7 @@ int main()
         	if(str[i]==' '||str[i]=='\0' || str[i] == '\r' /*|| str[i] == '$'*/ || str[i] == '\n')
         	{
         		if(str[i - 1]==' ' && str[i] == ' ') {
-        		}else {
+        		}else if (str[i] != '|' && str[i] != '>'){
         			commands[cnt][j]='\0';
             			cnt++;  //for next command
             			j=0;    //for next command, init index to 0
