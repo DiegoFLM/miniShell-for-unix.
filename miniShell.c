@@ -52,6 +52,8 @@ int main()
     while(t){
  
     	printf("At your command: ");
+    	
+    	bzero(str, 100);
     	fgets(str, 100, stdin);
  
  	char commands[15][15];
@@ -60,8 +62,12 @@ int main()
     	for(i=0;i<=(strlen(str));i++)
     	{
         	// if space or NULL found, assign NULL into commands[cnt]
-        	if(str[i]==' '||str[i]=='\0' || str[i] == '\r' /*|| str[i] == '$'*/ || str[i] == '\n'){
-        		if(str[i - 1]==' ' && str[i] == ' ') {
+        	if(str[i]==' '||str[i]=='\0' || str[i] == '\r' /*|| str[i] == '$'*/ || str[i] == '\n' || str[i] == '>'){
+        		if((str[i - 1]==' ' || str[i - 1]=='>') && (str[i] == ' ') || (str[i] == '>')) {
+        			if (str[i] == '>'){
+	        		redirectTotal++;
+        			redirectLocs[redirectTotal] = cnt - 1;
+        			}
         		}else {
         			commands[cnt][j]='\0';
             			cnt++;  //for next command
@@ -71,12 +77,13 @@ int main()
         		pipeLocs[pipeTotal] = cnt - 1;
         		pipeTotal++;
         		
-        	}else if (str[i] == '>'){
-        		redirectLocs[redirectTotal] = cnt - 1;
+        	}/*else if (str[i] == '>'){
         		redirectTotal++;
+        		redirectLocs[redirectTotal] = cnt - 1;
         		
         		
-        	}else{
+        		
+        	}*/else{
             		commands[cnt][j]=str[i];
             		j++;
         	}
@@ -85,9 +92,13 @@ int main()
     	
         
     	int argc;    
-    	char *cmd[5];    
+    	char *cmd[15];    
         
     	argc = 5;
+    	
+    	if (redirectTotal > 0){
+    		cnt--;
+    	}
     
     	for(i=0;i < cnt;i++){
     		cmd[i] = commands[i];
@@ -121,10 +132,10 @@ int main()
     		continue;	
     	} else if (redirectTotal > 0) {		//Redirection
     		
-		
-		file = open("output.txt", O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
+		printf("\nENTRAMOS REDIRECT\n");
+		/*int file = open("output.txt", O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
     		assert(file != -1);
-    		dup2(file, STDOUT_FILENO);
+    		dup2(file, STDOUT_FILENO);*/  //What before was to be sent to STDOUT_FILENO, now will be sent to file
 		
 		if (sonsPid < 0){
     			//fork failed
@@ -132,29 +143,50 @@ int main()
     			exit(1);
     		} else if (sonsPid == 0){
     			//child, commands will be executed here:
-    	
+    			
+    			
+    			for (int x = 0; x < 10; x++){
+    				/*for (int y = 0; y < 10; y++){
+    					printf("%c",cmd[x][y]);
+    				}*/
+    				printf("%s", cmd[x]);
+				printf("\n");    			
+    			}
+    			
+    			
+    			int file = open("output.txt", O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
+    			assert(file != -1);
+    			dup2(file, STDOUT_FILENO);
+    			
+    			
+    			printf("\nEntered: redirect-sonsPid\n");
+    			execvp(cmd[0], cmd); //Sons process deads and is replaced by the commands execution
+    			printf("\nExecvp failed to execute.\n");
+    			exit(EXIT_FAILURE);
     			
     		} else {
     		    //printf("\nDad is here\n");
     		    wait(&estado);
-    		    //close(file);		
+    		    //close(file);
+    		    //dup2(STDOUT_FILENO, file);
+    		    		
     	        if(WIFEXITED(estado)){
     	        	//close(file);		//LLA
     	            	if(WEXITSTATUS(estado)){
-                        	close(file);
-                        	printf(":(\n");
+                        	//close(file);
+                        	printf("\n:(\n");
     	            	}else{
-                        	close(file);
-                        	printf(":)\n");
+                        	//close(file);
+                        	printf("\n:)\n");
                     	}
 	    	
 	    	}
     	}
-		
+		//close(file);
     		continue;
     	}
     	
-    	
+    	//continue;
     	
     	
     	
@@ -172,18 +204,28 @@ int main()
     	} else if (sonsPid == 0){
     		//child, commands will be executed here:
     	
+    		for (int x = 0; x < 10; x++){
+    				/*for (int y = 0; y < 10; y++){
+    					printf("%c",cmd[x][y]);
+    				}*/
+    				printf("%s", cmd[x]);
+				printf("\n");    			
+    			}
+    	
+    		printf("Normal execvp");
     		execvp(cmd[0], cmd); /*Sons process deads and is replaced by the commands execution*/
     		printf("\nExecvp failed to execute.\n");
     		exit(EXIT_FAILURE);
     	
     	} else {
     	    //printf("\nDad is here\n");
+    	    printf("Something is not working");
     	    wait(&estado);
             if(WIFEXITED(estado)){
                 if(WEXITSTATUS(estado)){
-                        printf(":(\n");
+                        printf("\n:(\n");
                 }else{
-                        printf(":)\n");
+                        printf("\n:)\n");
                 }
 	    	
 	    }
