@@ -63,11 +63,17 @@ int main()
     	{
         	// if space or NULL found, assign NULL into commands[cnt]
         	if(str[i]==' '||str[i]=='\0' || str[i] == '\r' /*|| str[i] == '$'*/ || str[i] == '\n' || str[i] == '>'){
-        		if((str[i - 1]==' ' || str[i - 1]=='>') && (str[i] == ' ') || (str[i] == '>')) {
-        			if (str[i] == '>'){
+        		if(str[i - 1]==' ' && str[i]=='>'){
+        			redirectTotal++;
+        			redirectLocs[redirectTotal] = cnt - 1;
+        			//cnt--;
+        		}else if ((str[i] == ' ') && (str[i - 1] == '>')) {
+        			cnt++;
+        			/*if (str[i] == '>'){
 	        		redirectTotal++;
         			redirectLocs[redirectTotal] = cnt - 1;
-        			}
+        			
+        			}*/
         		}else {
         			commands[cnt][j]='\0';
             			cnt++;  //for next command
@@ -97,7 +103,7 @@ int main()
     	argc = 5;
     	
     	if (redirectTotal > 0){
-    		cnt--;
+    		//cnt--;
     	}
     
     	for(i=0;i < cnt;i++){
