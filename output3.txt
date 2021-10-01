@@ -1,0 +1,7 @@
+capture
+capture.c
+miniShell
+miniShell.c
+notebook.c
+output3.txt
+README.md
