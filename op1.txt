@@ -4,6 +4,4 @@ miniShell
 miniShell.c
 notebook.c
 op1.txt
-op2.txt
-output3.txt
 README.md

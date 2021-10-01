@@ -1,0 +1,14 @@
+total 92
+drwxrwxr-x 3 diegoflm diegoflm  4096 oct  1 04:01 .
+drwxrwxr-x 3 diegoflm diegoflm  4096 sep 18 18:37 ..
+-rwxrwxr-x 1 diegoflm diegoflm 16960 oct  1 02:55 capture
+-rw-rw-r-- 1 diegoflm diegoflm  1311 oct  1 02:55 capture.c
+drwxrwxr-x 8 diegoflm diegoflm  4096 oct  1 03:06 .git
+-rwxrwxr-x 1 diegoflm diegoflm 17600 oct  1 03:59 miniShell
+-rw-rw-r-- 1 diegoflm diegoflm  5014 oct  1 03:55 miniShell.c
+-rw-rw-r-- 1 diegoflm diegoflm  8817 oct  1 02:55 notebook.c
+-rwxrw---- 1 diegoflm diegoflm    69 oct  1 03:56 op1.txt
+-rwx------ 1 diegoflm diegoflm   646 oct  1 03:57 op2.txt
+--w------T 1 diegoflm diegoflm    89 oct  1 04:01 output3.txt
+--w------T 1 diegoflm diegoflm     0 oct  1 04:01 output4.txt
+-rw-rw-r-- 1 diegoflm diegoflm    67 abr 18 21:47 README.md
