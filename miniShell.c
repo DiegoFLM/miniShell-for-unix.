@@ -91,7 +91,7 @@ int main(void) {
   
     if( strstr(input, "exit") != NULL ){
       t = 0;
-    }
+    }else{
   
     if( strstr(input, "|") != NULL ){
       char *pipe[3];
@@ -202,7 +202,7 @@ int main(void) {
 
     }
 
-
+    }
 
   }
 
