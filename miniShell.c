@@ -97,10 +97,10 @@ int main(void) {
     and stores it (plus a terminating '\0' character) in str.*/
 
     int a = 0;
-    while (input[a] != '\0'){
+    /*while (input[a] != '\0'){
       printf("\n%c\n", input[a]);
       a++;
-    }
+    }*/
   
     if( strstr(input, "exit") != NULL ){
       t = 0;
