@@ -12,15 +12,15 @@
 #define WRITE 1
 
 
-void  separator(char string[], char *Instructions[], const char breaker[] ){
+void  separator(char string[], char *instructions[], const char breaker[] ){
   char *command = strtok(string, breaker);
   int n = 0;
   while(command != NULL)
   {
-    Instructions[n] = command;
+    instructions[n] = command;
     n++;
     command = strtok(NULL, breaker);
-    Instructions[n] = NULL;
+    instructions[n] = NULL;
   }
 }
 
@@ -62,7 +62,7 @@ void pipeLine(char *cmd[], char *args[]){
 int main(void) {
   printf("mini Welcome");
 
-  char  input[150];
+  char  input[100];
   
   
   int t = 1; 
@@ -70,12 +70,21 @@ int main(void) {
 
   while(t){
 
-    memset(input, '\0', 150); //Resets the array
+    memset(input, '\0', 100); //Resets the array
 
 
     printf("\nAt your command: ");
   
-    scanf(" %[^\n]", input); //Gets the users input.
+    scanf(" %[^\n]", input); /*Gets the users input; 
+    the %[^\n] conversion specification matches a string 
+    of all characters not equal to the new line character ('\n') 
+    and stores it (plus a terminating '\0' character) in str.*/
+
+    int a = 0;
+    while (input[a] != '\0'){
+      printf("\n%c\n", input[a]);
+      a++;
+    }
   
     if( strstr(input, "exit") != NULL ){
       t = 0;
@@ -159,7 +168,6 @@ int main(void) {
       char *args[7];
       separator(input, args, " ");
 
-
       pid_t sonsPidOthers;
       sonsPidOthers = fork();  
 
@@ -180,9 +188,11 @@ int main(void) {
     	    }else{
             printf("\n:)\n");
           }    	
-	      }
+	      }else{
+          printf("\n:(\n");
+        }
       
-        printf("\n:(\n");
+        
 
       }
     }
