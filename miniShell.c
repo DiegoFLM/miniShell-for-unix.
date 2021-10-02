@@ -30,6 +30,8 @@ void redirection(char *cmd[] , char *out[]){
   dup2(file, STDOUT_FILENO);  
   close(file);
   execvp(cmd[0], cmd);
+  exit(EXIT_FAILURE);
+  
 }
 
 
@@ -45,7 +47,7 @@ void pipeLine(char *cmd[], char *args[]){
     close(fd[WRITE]); 
     dup2(fd[READ], STDIN_FILENO);
     execvp(args[0], args);
-    printf("Pipe execvp failed\n");
+    exit(EXIT_FAILURE);
   
   }else if (pid == -1){
     perror("fork() failed");
@@ -55,6 +57,7 @@ void pipeLine(char *cmd[], char *args[]){
     close(fd[READ]);
     dup2(fd[WRITE], STDOUT_FILENO);
     execvp(cmd[0], cmd);
+    exit(EXIT_FAILURE);
   }
 }
 
@@ -157,7 +160,7 @@ int main(void) {
             printf("\n:(\n");
     	    }else{
             printf("\n:)\n");
-          }    	
+          }
 	      }
     
       }
@@ -177,6 +180,7 @@ int main(void) {
     		exit(1);
       }else if (sonsPidOthers == 0){
         execvp(args[0], args);
+        exit(EXIT_FAILURE);
       }else{
 
         //printf("\nDad is here\n");
@@ -188,13 +192,14 @@ int main(void) {
     	    }else{
             printf("\n:)\n");
           }    	
-	      }else{
-          printf("\n:(\n");
-        }
-      
-        
-
+	      }
       }
+    
+      if (sonsPidOthers == 0){
+        printf("TE TENGO ERROR PIROBO!");
+        
+      }
+
     }
 
 
