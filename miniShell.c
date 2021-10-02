@@ -1,3 +1,16 @@
+/**
+ * @file miniShell.c
+ * @author Diego Ledesma
+ * @code 1928161
+ * @author José David Barona Hernández 
+ * @code 1727590
+ * @brief intérprete de comandos que permita la ejecución de aplicaciones de un sistema Linux
+ * @version 0.1
+ * @date 2021-10-01
+ */
+
+
+
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
@@ -127,9 +140,6 @@ int main(void) {
 	      }
       }
 
-
-
-
     }else if( strstr(input, ">") != NULL){
       char *redirect[3];
       separator(input, redirect, ">");
@@ -138,7 +148,6 @@ int main(void) {
       out[0] = redirect[1];
       out[1] = NULL;
       separator(redirect[0], cmd, " ");
-
 
       //Fork
       pid_t sonsPidRed;
@@ -164,8 +173,6 @@ int main(void) {
 	      }
     
       }
-    
-
     
     }else{
       char *args[7];
@@ -194,18 +201,12 @@ int main(void) {
           }    	
 	      }
       }
-    
-      if (sonsPidOthers == 0){
-        printf("TE TENGO ERROR PIROBO!");
-        
-      }
 
     }
 
     }
 
   }
-
 
   return 0;
 }
